@@ -1,0 +1,33 @@
+{
+  "name": "pugl",
+  "version": "0.5.7",
+  "description": "Pugl (Plugin Graphics Library) is a minimal, portable C library for embeddable GUIs.",
+  "homepage": "https://gitlab.com/lv2/pugl",
+  "license": "ISC",
+  "dependencies": [
+    {
+      "name": "vcpkg-tool-meson",
+      "host": true
+    }
+  ],
+  "features": {
+    "cairo": {
+      "description": "Enable Cairo graphics backend",
+      "dependencies": [
+        "cairo"
+      ]
+    },
+    "opengl": {
+      "description": "Enable OpenGL graphics backend",
+      "dependencies": [
+        "opengl"
+      ]
+    },
+    "vulkan": {
+      "description": "Enable Vulkan graphics backend",
+      "dependencies": [
+        "vulkan"
+      ]
+    }
+  }
+}
