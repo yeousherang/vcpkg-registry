@@ -1,3 +1,8 @@
 {
-  "default": {}
+  "default": {
+    "pugl": {
+      "baseline": "0.5.7",
+      "port-version": 0
+    }
+  }
 }
