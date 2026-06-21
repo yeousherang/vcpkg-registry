@@ -1,0 +1,31 @@
+permissions:
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+        USERNAME: yeousherang
+        VCPKG_EXE: ${{ github.workspace }}/vcpkg/vcpkg
+        FEED_URL: https://nuget.pkg.github.com/yeousherang/index.json
+        VCPKG_BINARY_SOURCES: "clear;nuget,https://nuget.pkg.github.com/yeousherang/index.json,readwrite"
+    steps:
+    - name: Bootstrap vcpkg
+      shell: bash
+      run: ${{ github.workspace }}/vcpkg/bootstrap-vcpkg.sh
+    - name: Install mono
+      shell: bash
+      run: sudo apt install -y mono-complete
+    - name: Add NuGet sources
+      shell: bash
+      run: |
+        mono `${{ env.VCPKG_EXE }} fetch nuget | tail -n 1` \
+          sources add \
+          -Source "${{ env.FEED_URL }}" \
+          -StorePasswordInClearText \
+          -Name GitHubPackages \
+          -UserName "${{ env.USERNAME }}" \
+          -Password "${{ secrets.VCPKG_PAT_TOKEN }}"
+        mono `${{ env.VCPKG_EXE }} fetch nuget | tail -n 1` \
+          setapikey "${{ secrets.GITHUB_TOKEN }}" \
+          -Source "${{ env.FEED_URL }}"
