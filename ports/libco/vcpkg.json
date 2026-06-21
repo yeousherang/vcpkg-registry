@@ -1,0 +1,17 @@
+{
+  "name": "libco",
+  "version-date": "2024-09-09",
+  "description": "A minimalist, cooperative multithreading library in C89, designed for high performance.",
+  "homepage": "https://github.com/higan-emu/libco",
+  "license": "ISC",
+  "dependencies": [
+    {
+      "name": "vcpkg-cmake",
+      "host": true
+    },
+    {
+      "name": "vcpkg-cmake-config",
+      "host": true
+    }
+  ]
+}
