@@ -22,10 +22,10 @@ jobs:
 
     steps:
     - name: Checkout registry repo
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: Checkout vcpkg repo
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         repository: microsoft/vcpkg
         path: vcpkg
@@ -34,11 +34,11 @@ jobs:
       shell: bash
       run: ./vcpkg/bootstrap-vcpkg.sh
 
-    - name: Install Mono
+    - name: Install Mono and X11 Dependencies
       shell: bash
       run: |
         sudo apt-get update
-        sudo apt-get install -y mono-complete
+        sudo apt-get install -y mono-complete libx11-dev libxext-dev libxcursor-dev libxrandr-dev libxi-dev
 
     - name: Add NuGet sources
       shell: bash
