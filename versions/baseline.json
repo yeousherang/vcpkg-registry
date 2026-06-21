@@ -4,6 +4,10 @@
       "baseline": "2026-03-26",
       "port-version": 0
     },
+    "fastapprox": {
+      "baseline": "2017-05-20",
+      "port-version": 0
+    },
     "libco": {
       "baseline": "2024-09-09",
       "port-version": 0
