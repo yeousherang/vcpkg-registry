@@ -1,42 +1,86 @@
-name: "Binary Cache"
+name: "vcpkg CI & Binary Cache"
 
 on:
   push:
     branches: [ "main" ]
-
   pull_request:
     branches: [ "main" ]
-
   workflow_dispatch:
 
 permissions:
   packages: write
+  contents: read
 
 jobs:
-  build:
+  test-and-cache:
     runs-on: ubuntu-latest
     env:
-        USERNAME: yeousherang
-        VCPKG_EXE: ${{ github.workspace }}/vcpkg/vcpkg
-        FEED_URL: https://nuget.pkg.github.com/yeousherang/index.json
-        VCPKG_BINARY_SOURCES: "clear;nuget,https://nuget.pkg.github.com/yeousherang/index.json,readwrite"
+      USERNAME: ${{ github.repository_owner }}
+      VCPKG_EXE: ${{ github.workspace }}/vcpkg/vcpkg
+      FEED_URL: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+      VCPKG_BINARY_SOURCES: "clear;nuget,https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json,readwrite"
+
     steps:
+    - name: Checkout registry repo
+      uses: actions/checkout@v4
+
+    - name: Checkout vcpkg repo
+      uses: actions/checkout@v4
+      with:
+        repository: microsoft/vcpkg
+        path: vcpkg
+
     - name: Bootstrap vcpkg
       shell: bash
-      run: ${{ github.workspace }}/vcpkg/bootstrap-vcpkg.sh
-    - name: Install mono
+      run: ./vcpkg/bootstrap-vcpkg.sh
+
+    - name: Install Mono
       shell: bash
-      run: sudo apt install -y mono-complete
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y mono-complete
+
     - name: Add NuGet sources
       shell: bash
       run: |
+        # Use VCPKG_PAT_TOKEN if defined, otherwise fallback to GITHUB_TOKEN
+        PASSWORD="${{ secrets.VCPKG_PAT_TOKEN }}"
+        if [ -z "$PASSWORD" ]; then
+          PASSWORD="${{ secrets.GITHUB_TOKEN }}"
+        fi
+
+        # Add NuGet feed credentials
         mono `${{ env.VCPKG_EXE }} fetch nuget | tail -n 1` \
           sources add \
           -Source "${{ env.FEED_URL }}" \
           -StorePasswordInClearText \
           -Name GitHubPackages \
           -UserName "${{ env.USERNAME }}" \
-          -Password "${{ secrets.VCPKG_PAT_TOKEN }}"
+          -Password "$PASSWORD"
+
+        # Set API Key for the source
         mono `${{ env.VCPKG_EXE }} fetch nuget | tail -n 1` \
-          setapikey "${{ secrets.GITHUB_TOKEN }}" \
+          setapikey "$PASSWORD" \
           -Source "${{ env.FEED_URL }}"
+
+    - name: Find and test all ports dynamically
+      shell: bash
+      run: |
+        ports=()
+        for port_dir in ports/*/; do
+          if [ -d "$port_dir" ]; then
+            ports+=($(basename "$port_dir"))
+          fi
+        done
+
+        echo "============================================="
+        echo "Found ports to test: ${ports[*]}"
+        echo "============================================="
+
+        if [ ${#ports[@]} -eq 0 ]; then
+          echo "No ports found under 'ports/' directory."
+          exit 0
+        fi
+
+        # Install all ports using local overlay directory to verify
+        ${{ env.VCPKG_EXE }} install "${ports[@]}" --overlay-ports=ports
