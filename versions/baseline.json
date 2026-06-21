@@ -1,5 +1,9 @@
 {
   "default": {
+    "libco": {
+      "baseline": "2024-09-09",
+      "port-version": 0
+    },
     "pugl": {
       "baseline": "0.5.7",
       "port-version": 0
