@@ -72,7 +72,7 @@ jobs:
 
       - name: Add comment to Issue
         env:
-          GH_TOKEN: ${{ secrets.VCPKG_PAT_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh issue comment ${{ github.event.issue.number }} \
             --body "🎉 포트 \`${{ env.PORT_NAME }}\` 생성을 위한 Pull Request가 자동으로 생성되었습니다! 관리자의 리뷰 후 머지될 예정입니다."
