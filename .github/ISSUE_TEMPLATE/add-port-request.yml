@@ -17,7 +17,7 @@ body:
       placeholder: "예: 7.05 또는 2026-06-22"
     validations:
       required: true
-  - type: select
+  - type: dropdown
     id: version_type
     attributes:
       label: "버전 타입 (Version Type)"
