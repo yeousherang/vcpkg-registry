@@ -1,0 +1,67 @@
+name: "vcpkg 포트 추가 요청"
+description: "새로운 C++ 라이브러리 포트를 추가하기 위한 정보를 입력해주세요."
+title: "[Port Request] "
+labels: ["add-port"]
+body:
+  - type: input
+    id: port_name
+    attributes:
+      label: "포트 이름 (Port Name)"
+      placeholder: "예: xbyak"
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: "버전 (Version)"
+      placeholder: "예: 7.05 또는 2026-06-22"
+    validations:
+      required: true
+  - type: select
+    id: version_type
+    attributes:
+      label: "버전 타입 (Version Type)"
+      options:
+        - version
+        - version-date
+        - version-semver
+        - version-string
+      default: 0
+    validations:
+      required: true
+  - type: input
+    id: download_url
+    attributes:
+      label: "소스코드 아카이브 URL (Download URL)"
+      placeholder: "예: https://github.com/herumi/xbyak/archive/refs/tags/v7.05.tar.gz"
+    validations:
+      required: true
+  - type: input
+    id: sha512
+    attributes:
+      label: "SHA512 해시값 (선택 사항)"
+      description: "입력하지 않으면 자동 빌드 중에 스크립트가 해당 URL에서 소스를 받아 자동으로 해시를 계산합니다."
+      placeholder: "예: a1b2c3..."
+    validations:
+      required: false
+  - type: textarea
+    id: description
+    attributes:
+      label: "설명 (Description)"
+      placeholder: "라이브러리에 대한 간단한 설명입니다."
+    validations:
+      required: true
+  - type: input
+    id: homepage
+    attributes:
+      label: "홈페이지 URL (Homepage URL)"
+      placeholder: "예: https://github.com/herumi/xbyak"
+    validations:
+      required: true
+  - type: input
+    id: license
+    attributes:
+      label: "라이선스 (License)"
+      placeholder: "예: BSD-3-Clause"
+    validations:
+      required: true
