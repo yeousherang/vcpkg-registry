@@ -57,7 +57,7 @@ jobs:
 
           # Commit and push
           git commit -m "feat: add port ${{ env.PORT_NAME }} from issue #${{ github.event.issue.number }}"
-          git push origin $BRANCH_NAME
+          git push origin $BRANCH_NAME --force
 
       - name: Create Pull Request
         env:
