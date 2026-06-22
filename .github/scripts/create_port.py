@@ -108,7 +108,7 @@ def write_port_files(ports_dir, port_name, info):
 )
 
 vcpkg_extract_source_archive(
-    OUT_SOURCE_PATH SOURCE_PATH
+    SOURCE_PATH
     ARCHIVE "${{ARCHIVE}}"
 )
 
