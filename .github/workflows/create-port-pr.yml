@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -46,16 +46,16 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          
+
           BRANCH_NAME="add-port/${{ github.event.issue.number }}-${{ env.PORT_NAME }}"
           echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
-          
+
           # Create and checkout new branch
           git checkout -b $BRANCH_NAME
-          
+
           # Stage changes
           git add ports/${{ env.PORT_NAME }} versions README.md
-          
+
           # Commit and push
           git commit -m "feat: add port ${{ env.PORT_NAME }} from issue #${{ github.event.issue.number }}"
           git push origin $BRANCH_NAME
@@ -72,7 +72,7 @@ jobs:
 
       - name: Add comment to Issue
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.VCPKG_PAT_TOKEN }}
         run: |
           gh issue comment ${{ github.event.issue.number }} \
             --body "🎉 포트 \`${{ env.PORT_NAME }}\` 생성을 위한 Pull Request가 자동으로 생성되었습니다! 관리자의 리뷰 후 머지될 예정입니다."
