@@ -3,7 +3,6 @@ name: Create Port PR from Issue
 on:
   issues:
     types:
-      - opened
       - labeled
 
 permissions:
