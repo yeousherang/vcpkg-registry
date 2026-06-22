@@ -1,8 +1,0 @@
-blank_issues_enabled: false
-contact_links:
-  - name: GitHub Discussions
-    url: https://github.com/yeousherang/vcpkg-registry/discussions
-    about: 포트 추가 요청이 아닌 일반적인 질문이나 논의가 필요하다면 이 곳을 이용하세요.
-  - name: vcpkg 공식 문서
-    url: https://learn.microsoft.com/vcpkg
-    about: vcpkg 자체의 사용법이나 기본 포트 관련 정보는 공식 문서를 참조하세요.
